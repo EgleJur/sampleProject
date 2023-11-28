@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>List of Entitys</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1>List of Entitys</h1>
+
+  <ul id="entityList"></ul>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    const apiUrl = 'http://localhost:8080/api/v1/entitys'; // Replace with your API URL
+
+    function getAllEntitys() {
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(entitys => displayEntitys(entitys))
+        .catch(error => console.error('Error:', error));
+    }
+
+    function displayEntitys(entitys) {
+      const entityList = document.getElementById('entityList');
+      entityList.innerHTML = ''; // Clear previous content
+
+      entitys.forEach(entity => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `ID: ${entity.id},
+                  Name: ${entity.clientName},
+                  Email: ${entity.email},
+                  Date of birth: ${entity.dob},
+                  Balance: ${entity.balance}`;
+        entityList.appendChild(listItem);
+      });
+    }
+
+    // Call the function to fetch entitys when the page loads
+    window.onload = getAllEntitys;
+</script>
+</body>
+</html>
